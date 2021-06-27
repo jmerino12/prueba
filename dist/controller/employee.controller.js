@@ -12,7 +12,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.saveEmployee = exports.deleteEmployee = exports.editEmployee = exports.getEmployee = exports.getEmployees = void 0;
+exports.makeBoosAEmployee = exports.saveEmployee = exports.deleteEmployee = exports.editEmployee = exports.getEmployee = exports.getEmployees = void 0;
+const bosses_1 = __importDefault(require("../models/bosses"));
 const employees_1 = __importDefault(require("../models/employees"));
 const employees_2 = __importDefault(require("../models/employees"));
 const getEmployees = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -108,4 +109,22 @@ const saveEmployee = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.saveEmployee = saveEmployee;
+const makeBoosAEmployee = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    try {
+        const boss = bosses_1.default.build({ id_Employee: id });
+        yield boss.save();
+        res.status(200).json({
+            msg: 'makeABossoneEmployee',
+            boss
+        });
+    }
+    catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            msg: 'Hable con el administrador',
+        });
+    }
+});
+exports.makeBoosAEmployee = makeBoosAEmployee;
 //# sourceMappingURL=employee.controller.js.map

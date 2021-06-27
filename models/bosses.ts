@@ -7,11 +7,10 @@ interface BossesAttributes extends Model {
     id_Employee: number;
 }
 
-const Employee = db.define<BossesAttributes>('boss',{
+const Boss = db.define<BossesAttributes>('boss',{
     idbosses: {
         type: DataTypes.INTEGER.UNSIGNED,
         primaryKey: true,
-        autoIncrement: true
     },
     id_Employee: {
         type: DataTypes.INTEGER.UNSIGNED,
@@ -22,7 +21,8 @@ const Employee = db.define<BossesAttributes>('boss',{
     }
 },{
     tableName: 'bosses',
+    timestamps: false,
 });
 
-export default Employee;
+export default Boss;
 

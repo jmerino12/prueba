@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import Boss from "../models/bosses";
 import Employee from "../models/employees";
 import employee from "../models/employees";
 
@@ -88,6 +89,24 @@ export const saveEmployee = async (req: Request, res: Response) => {
         res.status(200).json({
             msg: 'saveEmployee',
             empleado
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            msg: 'Hable con el administrador',
+        });
+    }
+}
+
+export const makeBoosAEmployee = async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    try {
+        const boss =  Boss.build({ id_Employee: id});
+        await boss.save();
+        res.status(200).json({
+            msg: 'makeABossoneEmployee',
+            boss
         })
     } catch (error) {
         console.log(error);
