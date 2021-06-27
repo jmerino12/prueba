@@ -1,0 +1,49 @@
+version: "3.2"
+services:
+  nodejs:
+    build: 
+      context: .
+    image: prueba-banco-bogota
+    networks:
+      - frontend
+      - backend
+    environment:
+      - MYSQL_HOST=banco-mysql-app
+      - MYSQL_USER=bancouser
+      - MYSQL_PASS=bancopass
+      - MYSQL_DB=mydb
+    volumes:
+      - ./www/:/var/www/html/
+    ports:
+      - "30001:8005"
+    container_name: banco-nodejs-app
+    command: bash -c 'while !</dev/tcp/mysql/3306; do sleep 1; done; npm start'
+    depends_on:
+      - mysql
+  mysql:
+    image: mysql:5.7
+    networks:
+      - backend
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=bancouser
+      - MYSQL_PASSWORD=bancopass 
+      - MYSQL_DATABASE=mydb
+    container_name: banco-mysql-app
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:4.7
+    depends_on:
+      - mysql
+    networks:
+      - backend
+    ports:
+      - "30002:80"
+    environment:
+      - PMA_HOST=banco-mysql-app
+      - PMA_PORT= 3306
+    volumes:
+      - /sessions
+    container_name: banco-phpmyadmin-app
+networks:
+  frontend:
+  backend:
